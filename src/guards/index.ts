@@ -6,3 +6,5 @@ export * from './IBaseChildThread.guard';
 export * from './IMultiThreadsService.guard';
 export * from './IQueueBroker.guard';
 export * from './IQueueManager.guard';
+export * from './IStateMachine.guard';
+export * from './ITransition.guard';
