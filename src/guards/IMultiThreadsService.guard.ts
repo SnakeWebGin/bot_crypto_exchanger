@@ -13,8 +13,8 @@ export interface IMultiThreadsService {
 }
 
 export enum EnumMultiThreadsService {
-    Accounts = 'Accounts',
-    Signals = 'Signals',
+    ExchangerV2 = 'ExchangerV2',
+    ExchangerV3 = 'ExchangerV3',
 }
 
 export namespace IMultiThreadsService {

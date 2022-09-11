@@ -14,14 +14,14 @@ export class TestThread implements ITestThread {
 
     async init(): Promise<void> {
         await this._multiThreadsService.create(
-            EnumMultiThreadsService.Accounts,
+            EnumMultiThreadsService.ExchangerV2,
             10,
             './tests/multithreads/TestChildThread.ts',
             index => index
         );
 
-        this._manyAsOneBroker.init(EnumMultiThreadsService.Accounts);
-        this._queueBroker.init(EnumMultiThreadsService.Accounts);
+        this._manyAsOneBroker.init(EnumMultiThreadsService.ExchangerV2);
+        this._queueBroker.init(EnumMultiThreadsService.ExchangerV2);
     }
 
     async manyAsOne(a: number, b: number): Promise<Array<number>> {
@@ -40,6 +40,6 @@ export class TestThread implements ITestThread {
     }
 
     async destroy(): Promise<void> {
-        await this._multiThreadsService.destroyById(EnumMultiThreadsService.Accounts);
+        await this._multiThreadsService.destroyById(EnumMultiThreadsService.ExchangerV2);
     }
 }
