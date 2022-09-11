@@ -1,6 +1,7 @@
 import {interfaces} from "inversify";
 import {IStreamListenEvent} from "./IStreamListenBroker.guard";
 import {Subject} from "rxjs/Subject";
+import {IExchangerInitData} from "./ExchangerThread.guard";
 
 export interface IExchangersEvent extends IStreamListenEvent {
     type: string;
@@ -8,7 +9,7 @@ export interface IExchangersEvent extends IStreamListenEvent {
 
 export interface IExchangers {
     readonly currencyValue$: Subject<IExchangersEvent>;
-    init(pairs: Array<{ from: string, to: string }>): Promise<void>;
+    init(pairs: Array<IExchangerInitData>): Promise<void>;
 }
 
 export namespace IExchangers {

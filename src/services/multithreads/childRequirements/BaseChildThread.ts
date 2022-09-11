@@ -50,5 +50,7 @@ export abstract class BaseChildThread implements IBaseChildThread {
     }
 
     protected abstract init(data?: Object): Promise<void>;
-    protected abstract execute(method: string, data: unknown): Promise<Object | undefined>;
+    protected execute(method: string, data: unknown): Promise<Object | undefined> {
+        return Promise.resolve(undefined);
+    }
 }

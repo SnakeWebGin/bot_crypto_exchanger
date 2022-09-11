@@ -12,8 +12,6 @@ export class ReadyMainTransition extends AbstractTransition implements ITransiti
     }
 
     onIntro(): Promise<void> {
-        console.log('>>>>>>ready intro');
-
         this._exchangers.currencyValue$.subscribe(data => {
             console.log(data);
         })

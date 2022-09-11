@@ -13,6 +13,11 @@
   "author": "Anton Lavrenko",
   "license": "ISC",
   "dependencies": {
+    "@ethersproject/address": "^5.7.0",
+    "@ethersproject/contracts": "^5.7.0",
+    "@ethersproject/providers": "^5.7.0",
+    "@ethersproject/solidity": "^5.7.0",
+    "@uniswap/sdk": "^3.0.3",
     "clean-webpack-plugin": "0.1.19",
     "codelyzer": "^6.0.2",
     "copy-webpack-plugin": "4.5.1",

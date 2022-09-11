@@ -32,8 +32,4 @@ export default class ExchangerV2Thread extends BaseChildThread implements IBaseC
             }));
         console.log('>>>INITTED', data);
     }
-
-    protected execute(method: string, data: unknown): Promise<Object | undefined> {
-        return Promise.resolve(undefined);
-    }
 }
