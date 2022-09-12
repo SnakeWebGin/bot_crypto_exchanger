@@ -29,6 +29,16 @@ export default class ExchangerV3Thread extends BaseChildThread implements IBaseC
             return Promise.reject(error);
         }
 
+        if (/--\s/.test(configs.ETHERSCAN_API_KEY)) {
+            this._logger.warn(`For using Uniswap V3 you need to set up a "ETHERSCAN_API_KEY" in ./configs/index.ts`);
+            return;
+        }
+
+        if (/--\s/.test(configs.INFURA_URL)) {
+            this._logger.warn(`For using Uniswap V3 you need to set up a "INFURA_URL" in ./configs/index.ts`);
+            return;
+        }
+
         this._provider = new ethers.providers.JsonRpcProvider(configs.INFURA_URL);
 
         interval(1000)
