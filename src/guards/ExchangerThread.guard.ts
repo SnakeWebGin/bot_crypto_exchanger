@@ -17,3 +17,21 @@ export namespace IExchangerInitData {
         }))
     }
 }
+
+export interface IExchangerPrice {
+    aSymbol: string;
+    bSymbol: string;
+    a2bPrice: string;
+    b2aPrice: string;
+}
+
+export namespace IExchangerPrice {
+    export const guard = (data: unknown): data is IExchangerPrice => {
+        return validateVariable((data as IExchangerPrice), PropTypes.shape({
+            aSymbol: PropTypes.string.isRequired,
+            bSymbol: PropTypes.string.isRequired,
+            a2bPrice: PropTypes.string.isRequired,
+            b2aPrice: PropTypes.string.isRequired,
+        }));
+    }
+}

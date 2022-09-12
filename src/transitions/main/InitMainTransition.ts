@@ -17,13 +17,13 @@ export class InitMainTransition extends AbstractTransition implements ITransitio
             USDT: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
             USDC: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
             WETH: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-            MATIC: '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0'
+            DAI: '0x6B175474E89094C44Da98b954EedeAC495271d0F'
         };
 
         await this._exchangers.init([
             { from: 'USDT', fromToken: tokens.USDT, to: 'WETH', toToken: tokens.WETH },
             { from: 'USDC', fromToken: tokens.USDC, to: 'WETH', toToken: tokens.WETH },
-            // { from: 'WETH', fromToken: tokens.WETH, to: 'MATIC', toToken: tokens.MATIC },
+            { from: 'WETH', fromToken: tokens.WETH, to: 'DAI', toToken: tokens.DAI },
         ]);
 
         this._mainStateMachine.act('ready');
