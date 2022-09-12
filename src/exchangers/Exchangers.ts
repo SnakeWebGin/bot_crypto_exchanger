@@ -21,26 +21,26 @@ export class Exchangers implements IExchangers {
     }
 
     async init(pairs: Array<IExchangerInitData>): Promise<void> {
+        // await this._multiThreadsService.create(
+        //     EnumMultiThreadsService.ExchangerV2,
+        //     pairs.length,
+        //     './exchangers/ExchangerV2Thread.ts',
+        //     index => pairs[index]
+        // );
+        //
+        // const v2$: Observable<IExchangersEvent> = this._streamListenBroker(EnumMultiThreadsService.ExchangerV2)
+        //     .events$.pipe(map(e => ({...e, type: 'v2'})));
+
         await this._multiThreadsService.create(
-            EnumMultiThreadsService.ExchangerV2,
+            EnumMultiThreadsService.ExchangerV3,
             pairs.length,
-            './exchangers/ExchangerV2Thread.ts',
+            './exchangers/ExchangerV3Thread.ts',
             index => pairs[index]
         );
 
-        const v2$: Observable<IExchangersEvent> = this._streamListenBroker(EnumMultiThreadsService.ExchangerV2)
-            .events$.pipe(map(e => ({...e, type: 'v2'})));
+        const v3$: Observable<IExchangersEvent> = this._streamListenBroker(EnumMultiThreadsService.ExchangerV3)
+            .events$.pipe(map(e => ({...e, type: 'v3'})));
 
-        // await this._multiThreadsService.create(
-        //     EnumMultiThreadsService.ExchangerV3,
-        //     pairs.length,
-        //     './exchangers/ExchangerV3Thread.ts',
-        //     index => pairs[index]
-        // );
-
-        // const v3$: Observable<IExchangersEvent> = this._streamListenBroker(EnumMultiThreadsService.ExchangerV3)
-        //     .events$.pipe(map(e => ({...e, type: 'v3'})));
-
-        merge(v2$, /*v3$*/).subscribe(data => this.currencyValue$.next(data));
+        merge(/*v2$, */v3$).subscribe(data => this.currencyValue$.next(data));
     }
 }
