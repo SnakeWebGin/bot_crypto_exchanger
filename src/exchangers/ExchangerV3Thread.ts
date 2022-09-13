@@ -1,17 +1,27 @@
 import {inject, injectable} from "inversify";
-import axios from "axios";
 import {interval} from "rxjs/observable/interval";
 import {filter} from "rxjs/operators/filter";
 import { ethers } from "ethers";
+import { Token } from '@uniswap/sdk-core'
+import { Pool } from '@uniswap/v3-sdk'
 import { abi as IUniswapV3PoolABI  } from "@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json";
-import { abi as QuoterABI } from "@uniswap/v3-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json";
 import {BaseChildThread} from "../services/multithreads/childRequirements/BaseChildThread";
 import {IBaseChildThread, IExchangerInitData, IExchangerPrice, ILogger, IThreadChild} from "../guards";
 import {configs} from "../configs";
 
+interface State {
+    liquidity: ethers.BigNumber
+    sqrtPriceX96: ethers.BigNumber
+    tick: number
+    observationIndex: number
+    observationCardinality: number
+    observationCardinalityNext: number
+    feeProtocol: number
+    unlocked: boolean
+}
+
 @injectable()
 export default class ExchangerV3Thread extends BaseChildThread implements IBaseChildThread {
-    private readonly _quoterAddress = "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6";
     private _provider: ethers.providers.JsonRpcProvider;
     private _busy = false;
 
@@ -29,11 +39,6 @@ export default class ExchangerV3Thread extends BaseChildThread implements IBaseC
             return Promise.reject(error);
         }
 
-        if (/--\s/.test(configs.ETHERSCAN_API_KEY)) {
-            this._logger.warn(`For using Uniswap V3 you need to set up a "ETHERSCAN_API_KEY" in ./configs/index.ts`);
-            return;
-        }
-
         if (/--\s/.test(configs.INFURA_URL)) {
             this._logger.warn(`For using Uniswap V3 you need to set up a "INFURA_URL" in ./configs/index.ts`);
             return;
@@ -47,7 +52,7 @@ export default class ExchangerV3Thread extends BaseChildThread implements IBaseC
                 this._busy = true;
 
                 try {
-                    const data = await this.getPrice(1);
+                    const data = await this.getPrice(initData);
                     this._threadChild.response$.next({
                         method: 'emitPrice',
                         data
@@ -60,87 +65,47 @@ export default class ExchangerV3Thread extends BaseChildThread implements IBaseC
             });
     }
 
-    private async getPrice(inputAmount: number): Promise<IExchangerPrice> {
-        const poolAddress = '0xcbcdf9626bc03e24f779434178a73a0b4bad62ed'
+    private async getPrice(data: IExchangerInitData): Promise<IExchangerPrice> {
+        const poolContract = new ethers.Contract(data.poolAddress, IUniswapV3PoolABI, this._provider);
 
-        const poolContract = new ethers.Contract(
-            poolAddress,
-            IUniswapV3PoolABI,
-            this._provider
-        )
+        const [immutables, state] = await Promise.all([this.getPoolImmutables(poolContract), this.getPoolState(poolContract)]);
 
-        const tokenAddress0 = await poolContract.token0();
-        const tokenAddress1 = await poolContract.token1();
+        const TokenA = new Token(3, immutables.token0, data.fromDecimals, data.from);
+        const TokenB = new Token(3, immutables.token1, data.toDecimals, data.to);
 
-        const tokenAbi0 = await this.getAbi(tokenAddress0)
-        const tokenAbi1 = await this.getAbi(tokenAddress1)
-
-        const tokenContract0 = new ethers.Contract(
-            tokenAddress0,
-            tokenAbi0,
-            this._provider
-        )
-        const tokenContract1 = new ethers.Contract(
-            tokenAddress1,
-            tokenAbi1,
-            this._provider
-        )
-
-        const tokenSymbol0 = await tokenContract0.symbol()
-        const tokenSymbol1 = await tokenContract1.symbol()
-        const tokenDecimals0 = await tokenContract0.decimals()
-        const tokenDecimals1 = await tokenContract1.decimals()
-
-        const quoterContract = new ethers.Contract(
-            this._quoterAddress,
-            QuoterABI,
-            this._provider
-        )
-
-        const immutables = await this.getPoolImmutables(poolContract)
-
-        const amountIn = ethers.utils.parseUnits(
-            inputAmount.toString(),
-            tokenDecimals0
+        const poolExample = new Pool(
+            TokenA,
+            TokenB,
+            immutables.fee as any,
+            state.sqrtPriceX96.toString(),
+            state.liquidity.toString(),
+            state.tick
         );
 
-        const amountRevertIn = ethers.utils.parseUnits(
-            inputAmount.toString(),
-            tokenDecimals1
-        )
-
-        const quotedAmountOut = await quoterContract.callStatic.quoteExactInputSingle(
-            immutables.token0,
-            immutables.token1,
-            immutables.fee,
-            amountIn,
-            0
-        );
-
-        const quotedAmountRevertOut = await quoterContract.callStatic.quoteExactInputSingle(
-            immutables.token1,
-            immutables.token0,
-            immutables.fee,
-            amountRevertIn,
-            0
-        );
-
-        const amountOut = ethers.utils.formatUnits(quotedAmountOut, tokenDecimals1);
-        const amountRevertOut = ethers.utils.formatUnits(quotedAmountRevertOut, tokenDecimals0);
+        const token0Price = poolExample.token0Price.toSignificant(6);
+        const token1Price = poolExample.token1Price.toSignificant(6);
 
         return {
-            aSymbol: tokenSymbol0,
-            bSymbol: tokenSymbol1,
-            a2bPrice: amountOut,
-            b2aPrice: amountRevertOut,
-        };
+            aSymbol: data.from,
+            bSymbol: data.to,
+            a2bPrice: token0Price,
+            b2aPrice: token1Price
+        }
     }
 
+    async getPoolState(poolContract: ethers.Contract): Promise<State> {
+        const [liquidity, slot] = await Promise.all([poolContract.liquidity(), poolContract.slot0()])
 
-    private async getAbi(address: string): Promise<string> {
-        const url = `https://api.etherscan.io/api?module=contract&action=getabi&address=${address}&apikey=${configs.ETHERSCAN_API_KEY}`;
-        const res = await axios.get(url);
-        return JSON.parse(res.data.result);
+        return {
+            liquidity,
+            sqrtPriceX96: slot[0],
+            tick: slot[1],
+            observationIndex: slot[2],
+            observationCardinality: slot[3],
+            observationCardinalityNext: slot[4],
+            feeProtocol: slot[5],
+            unlocked: slot[6],
+        }
     }
 
     private async getPoolImmutables (poolContract: ethers.Contract): Promise<{token0: string, token1: string, fee: string}> {

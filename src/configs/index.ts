@@ -1,4 +1,3 @@
 export const configs = {
-    ETHERSCAN_API_KEY: '-- your key --',
-    INFURA_URL: '-- your url --',
+    INFURA_URL: '-- your infra url --',
 };

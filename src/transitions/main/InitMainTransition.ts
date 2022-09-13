@@ -21,9 +21,33 @@ export class InitMainTransition extends AbstractTransition implements ITransitio
         };
 
         await this._exchangers.init([
-            { from: 'USDT', fromToken: tokens.USDT, to: 'WETH', toToken: tokens.WETH },
-            { from: 'USDC', fromToken: tokens.USDC, to: 'WETH', toToken: tokens.WETH },
-            { from: 'WETH', fromToken: tokens.WETH, to: 'DAI', toToken: tokens.DAI },
+            {
+                from: 'WETH',
+                fromToken: tokens.WETH,
+                fromDecimals: 18,
+                to: 'USDT',
+                toToken: tokens.USDT,
+                toDecimals: 6,
+                poolAddress: '0x11b815efb8f581194ae79006d24e0d814b7697f6',
+            },
+            {
+                from: 'USDC',
+                fromToken: tokens.USDC,
+                fromDecimals: 6,
+                to: 'WETH',
+                toToken: tokens.WETH,
+                toDecimals: 18,
+                poolAddress: '0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640'
+            },
+            {
+                from: 'DAI',
+                fromToken: tokens.DAI,
+                fromDecimals: 18,
+                to: 'WETH',
+                toToken: tokens.WETH,
+                toDecimals: 18,
+                poolAddress: '0x60594a405d53811d3bc4766596efd80fd545a270'
+            },
         ]);
 
         this._mainStateMachine.act('ready');

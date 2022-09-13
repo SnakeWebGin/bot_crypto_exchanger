@@ -3,8 +3,11 @@ import {PropTypes, validateVariable} from "./PropType";
 export interface IExchangerInitData {
     from: string;
     fromToken: string;
+    fromDecimals: number;
     to: string;
     toToken: string;
+    toDecimals: number;
+    poolAddress: string;
 }
 
 export namespace IExchangerInitData {
