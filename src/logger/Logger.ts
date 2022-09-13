@@ -22,7 +22,6 @@ export class Logger implements ILogger {
                 new winston.transports.Console({ level: 'info' }),
                 new winston.transports.File({ filename: './logs/error.log', level: 'error', maxFiles: 5, maxsize: 10 * 1024 * 1024 }),
                 new winston.transports.File({ filename: './logs/debug.log', level: 'debug', maxFiles: 20, maxsize: 100 * 1024 * 1024 }),
-                new winston.transports.File({ filename: './logs/combined.log', maxFiles: 5, maxsize: 10 * 1024 * 1024  }),
             ],
         });
     }

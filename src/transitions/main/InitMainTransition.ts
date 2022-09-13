@@ -49,8 +49,6 @@ export class InitMainTransition extends AbstractTransition implements ITransitio
                 poolAddress: '0x60594a405d53811d3bc4766596efd80fd545a270'
             },
         ]);
-
-        this._mainStateMachine.act('ready');
     }
 
     async onError(err: { message: string; stack: string }): Promise<void> {

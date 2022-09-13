@@ -1,20 +1,25 @@
 import {inject, injectable} from "inversify";
 import {AbstractTransition} from "../AbstractTransition";
-import {IExchangers, ILogger, ITransition} from "../../guards";
+import {IExchangers, ILogger, IStateMachine, ITransition} from "../../guards";
+import {interval} from "rxjs/observable/interval";
+import {take} from "rxjs/operators";
 
 @injectable()
-export class ReadyMainTransition extends AbstractTransition implements ITransition {
+export class IdleMainTransition extends AbstractTransition implements ITransition {
     constructor(
         @inject(ILogger.serviceId) protected _logger: ILogger,
         @inject(IExchangers.serviceId) protected _exchangers: IExchangers,
+        @inject(IStateMachine.serviceMainId) protected _mainStateMachine: IStateMachine,
     ) {
         super();
     }
 
     onIntro(): Promise<void> {
-        this._exchangers.currencyValue$.subscribe(data => {
-            console.log(data);
-        })
+        interval(1000 * 5)
+            .pipe(take(1))
+            .subscribe(_ => {
+                this._mainStateMachine.act('writeLog');
+            });
 
         return Promise.resolve(undefined);
     }

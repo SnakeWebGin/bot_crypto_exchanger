@@ -1,4 +1,5 @@
 export const EnumMainTransition = {
     InitMainTransition:  Symbol('InitMainTransition'),
-    ReadyMainTransition:  Symbol('ReadyMainTransition'),
+    IdleMainTransition:  Symbol('IdleMainTransition'),
+    WriteLogsMainTransition:  Symbol('WriteLogsMainTransition'),
 }

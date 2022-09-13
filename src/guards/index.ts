@@ -11,3 +11,4 @@ export * from './IStateMachine.guard';
 export * from './ITransition.guard';
 export * from './IExchangers.guard';
 export * from './ExchangerThread.guard';
+export * from './IExchangeModel.guard';
