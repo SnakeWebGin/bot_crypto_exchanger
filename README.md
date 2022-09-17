@@ -1,3 +1,6 @@
+Rename file - './src/configs/index.ts.example' to './src/configs/index.ts' 
+Set your config data to this file!
+
 For working with @uniswap/v3-sdk you need to have a key:
 - https://infura.io
 
