@@ -1,6 +1,6 @@
-import {interfaces} from "inversify";
-import {EnumMultiThreadsService, IThreadData} from "./IMultiThreadsService.guard";
-import {Subject} from "rxjs/Subject";
+import {interfaces} from 'inversify';
+import {EnumMultiThreadsService, IThreadData} from './IMultiThreadsService.guard';
+import {Subject} from 'rxjs/Subject';
 
 export interface IStreamListenEvent extends IThreadData {
     id: string;

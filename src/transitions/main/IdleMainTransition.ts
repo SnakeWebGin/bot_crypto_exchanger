@@ -1,8 +1,8 @@
-import {inject, injectable} from "inversify";
-import {AbstractTransition} from "../AbstractTransition";
-import {IExchangers, ILogger, IStateMachine, ITransition} from "../../guards";
-import {interval} from "rxjs/observable/interval";
-import {take} from "rxjs/operators";
+import {inject, injectable} from 'inversify';
+import {AbstractTransition} from '../AbstractTransition';
+import {IExchangers, ILogger, IStateMachine, ITransition} from '../../guards';
+import {interval} from 'rxjs/observable/interval';
+import {take} from 'rxjs/operators';
 
 @injectable()
 export class IdleMainTransition extends AbstractTransition implements ITransition {

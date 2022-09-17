@@ -1,11 +1,11 @@
-import {inject, injectable} from "inversify";
-import fs from "fs";
-import {AbstractTransition} from "../AbstractTransition";
-import {IExchangeModel, IExchangePair, ITransition} from "../../guards";
+import {inject, injectable} from 'inversify';
+import fs from 'fs';
+import {AbstractTransition} from '../AbstractTransition';
+import {IExchangeModel, IExchangePair, ITransition} from '../../guards';
 
 @injectable()
 export class WriteLogsMainTransition extends AbstractTransition implements ITransition {
-    private _filepath = `${__dirname}/../pairsLogs/logs.log`
+    private _filepath = `${__dirname}/../pairsLogs/logs.log`;
 
     constructor(
         @inject(IExchangeModel.serviceId) protected _exchangeModel: IExchangeModel,

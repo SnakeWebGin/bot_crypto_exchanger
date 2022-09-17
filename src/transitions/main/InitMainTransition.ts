@@ -1,6 +1,6 @@
-import {inject, injectable} from "inversify";
-import {AbstractTransition} from "../AbstractTransition";
-import {IExchangers, ILogger, IStateMachine, ITransition} from "../../guards";
+import {inject, injectable} from 'inversify';
+import {AbstractTransition} from '../AbstractTransition';
+import {IExchangers, ILogger, IStateMachine, ITransition} from '../../guards';
 
 @injectable()
 export class InitMainTransition extends AbstractTransition implements ITransition {

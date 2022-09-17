@@ -1,14 +1,14 @@
-import {inject, injectable} from "inversify";
+import {inject, injectable} from 'inversify';
 import {
     EnumMultiThreadsService,
     ILogger,
     IMultiThreadsService,
     IStreamListenBroker, IStreamListenEvent,
-} from "../../../guards";
-import {Subject} from "rxjs/Subject";
-import {Observable} from "rxjs/Observable";
-import {map} from "rxjs/operators/map";
-import {merge} from "rxjs/observable/merge";
+} from '../../../guards';
+import {Subject} from 'rxjs/Subject';
+import {Observable} from 'rxjs/Observable';
+import {map} from 'rxjs/operators/map';
+import {merge} from 'rxjs/observable/merge';
 
 @injectable()
 export class StreamListenBroker implements IStreamListenBroker {

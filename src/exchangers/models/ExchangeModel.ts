@@ -1,5 +1,5 @@
-import {injectable} from "inversify";
-import {IExchangeModel, IExchangePair, IExchangerPrice} from "../../guards";
+import {injectable} from 'inversify';
+import {IExchangeModel, IExchangePair, IExchangerPrice} from '../../guards';
 
 @injectable()
 export class ExchangeModel implements IExchangeModel {

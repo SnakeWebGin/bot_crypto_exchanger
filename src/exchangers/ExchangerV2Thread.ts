@@ -1,9 +1,9 @@
-import {inject, injectable} from "inversify";
-import {interval} from "rxjs/observable/interval";
-import {filter} from "rxjs/operators/filter";
-import {ChainId, Fetcher, Route} from "@uniswap/sdk";
-import {BaseChildThread} from "../services/multithreads/childRequirements/BaseChildThread";
-import {IBaseChildThread, IExchangerInitData, IExchangerPrice, ILogger, IThreadChild} from "../guards";
+import {inject, injectable} from 'inversify';
+import {interval} from 'rxjs/observable/interval';
+import {filter} from 'rxjs/operators/filter';
+import {ChainId, Fetcher, Route} from '@uniswap/sdk';
+import {BaseChildThread} from '../services/multithreads/childRequirements/BaseChildThread';
+import {IBaseChildThread, IExchangerInitData, IExchangerPrice, ILogger, IThreadChild} from '../guards';
 
 @injectable()
 export default class ExchangerV2Thread extends BaseChildThread implements IBaseChildThread {
@@ -33,7 +33,7 @@ export default class ExchangerV2Thread extends BaseChildThread implements IBaseC
                     this._threadChild.response$.next({
                         method: 'emitPrice',
                         data
-                    })
+                    });
                 } catch (e) {
                     this._logger.err(`Error: ${e.message}`, e.stack);
                 } finally {

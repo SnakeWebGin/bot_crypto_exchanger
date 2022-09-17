@@ -3,3 +3,4 @@ package-lock.json
 node_modules
 bin
 logs/*.log
+src/configs/index.ts

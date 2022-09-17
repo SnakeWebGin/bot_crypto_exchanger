@@ -1,7 +1,7 @@
-import {interfaces} from "inversify";
-import {IStreamListenEvent} from "./IStreamListenBroker.guard";
-import {Subject} from "rxjs/Subject";
-import {IExchangerInitData} from "./ExchangerThread.guard";
+import {interfaces} from 'inversify';
+import {IStreamListenEvent} from './IStreamListenBroker.guard';
+import {Subject} from 'rxjs/Subject';
+import {IExchangerInitData} from './ExchangerThread.guard';
 
 export interface IExchangersEvent extends IStreamListenEvent {
     type: string;

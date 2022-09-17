@@ -1,5 +1,5 @@
 import {State} from '../../states/State';
-import {EnumMainTransition} from "./type";
+import {EnumMainTransition} from './type';
 
 export const getMainLogics = () => {
     return [

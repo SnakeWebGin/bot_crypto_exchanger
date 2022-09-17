@@ -1,9 +1,9 @@
 import {getContainer} from '../../container/inversify.config';
 import {getMainLogics} from './mainLogics';
-import {EnumMainTransition} from "./type";
-import {InitMainTransition} from "./InitMainTransition";
-import {IdleMainTransition} from "./IdleMainTransition";
-import {WriteLogsMainTransition} from "./WriteLogsMainTransition";
+import {EnumMainTransition} from './type';
+import {InitMainTransition} from './InitMainTransition';
+import {IdleMainTransition} from './IdleMainTransition';
+import {WriteLogsMainTransition} from './WriteLogsMainTransition';
 import {connectModule, IStateMachine, ITransition} from '../../guards';
 
 export const connectMainTransitions = connectModule(({ bind }) => {

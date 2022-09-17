@@ -1,4 +1,4 @@
-import {PropTypes, validateVariable} from "./PropType";
+import {PropTypes, validateVariable} from './PropType';
 
 export interface IExchangerInitData {
     from: string;
@@ -17,8 +17,8 @@ export namespace IExchangerInitData {
             fromToken: PropTypes.string.isRequired,
             to: PropTypes.string.isRequired,
             toToken: PropTypes.string.isRequired,
-        }))
-    }
+        }));
+    };
 }
 
 export interface IExchangerPrice {
@@ -36,5 +36,5 @@ export namespace IExchangerPrice {
             a2bPrice: PropTypes.string.isRequired,
             b2aPrice: PropTypes.string.isRequired,
         }));
-    }
+    };
 }

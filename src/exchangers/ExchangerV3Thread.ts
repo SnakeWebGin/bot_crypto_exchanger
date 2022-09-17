@@ -1,23 +1,24 @@
-import {inject, injectable} from "inversify";
-import {interval} from "rxjs/observable/interval";
-import {filter} from "rxjs/operators/filter";
-import { ethers } from "ethers";
-import { Token } from '@uniswap/sdk-core'
-import { Pool } from '@uniswap/v3-sdk'
-import { abi as IUniswapV3PoolABI  } from "@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json";
-import {BaseChildThread} from "../services/multithreads/childRequirements/BaseChildThread";
-import {IBaseChildThread, IExchangerInitData, IExchangerPrice, ILogger, IThreadChild} from "../guards";
-import {configs} from "../configs";
+import {inject, injectable} from 'inversify';
+import {interval} from 'rxjs/observable/interval';
+import {filter} from 'rxjs/operators/filter';
+import {abi as IUniswapV3PoolABI} from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json';
+import {ethers} from 'ethers';
+import {Token} from '@uniswap/sdk-core';
+import { abi as IUniswapV3Multi} from '@uniswap/v3-periphery/artifacts/contracts/interfaces/IMulticall.sol/IMulticall.json';
+import {Pool} from '@uniswap/v3-sdk';
+import {BaseChildThread} from '../services/multithreads/childRequirements/BaseChildThread';
+import {IBaseChildThread, IExchangerInitData, IExchangerPrice, ILogger, IThreadChild} from '../guards';
+import {configs} from '../configs';
 
 interface State {
-    liquidity: ethers.BigNumber
-    sqrtPriceX96: ethers.BigNumber
-    tick: number
-    observationIndex: number
-    observationCardinality: number
-    observationCardinalityNext: number
-    feeProtocol: number
-    unlocked: boolean
+    liquidity: ethers.BigNumber;
+    sqrtPriceX96: ethers.BigNumber;
+    tick: number;
+    observationIndex: number;
+    observationCardinality: number;
+    observationCardinalityNext: number;
+    feeProtocol: number;
+    unlocked: boolean;
 }
 
 @injectable()
@@ -56,7 +57,7 @@ export default class ExchangerV3Thread extends BaseChildThread implements IBaseC
                     this._threadChild.response$.next({
                         method: 'emitPrice',
                         data
-                    })
+                    });
                 } catch (e) {
                     this._logger.err(`Error: ${e.message}`, e.stack);
                 } finally {
@@ -90,11 +91,11 @@ export default class ExchangerV3Thread extends BaseChildThread implements IBaseC
             bSymbol: data.to,
             a2bPrice: token0Price,
             b2aPrice: token1Price
-        }
+        };
     }
 
     async getPoolState(poolContract: ethers.Contract): Promise<State> {
-        const [liquidity, slot] = await Promise.all([poolContract.liquidity(), poolContract.slot0()])
+        const [liquidity, slot] = await Promise.all([poolContract.liquidity(), poolContract.slot0()]);
 
         return {
             liquidity,
@@ -105,10 +106,10 @@ export default class ExchangerV3Thread extends BaseChildThread implements IBaseC
             observationCardinalityNext: slot[4],
             feeProtocol: slot[5],
             unlocked: slot[6],
-        }
+        };
     }
 
-    private async getPoolImmutables (poolContract: ethers.Contract): Promise<{token0: string, token1: string, fee: string}> {
+    private async getPoolImmutables(poolContract: ethers.Contract): Promise<{ token0: string, token1: string, fee: string }> {
         const [token0, token1, fee] = await Promise.all([
             poolContract.token0(),
             poolContract.token1(),
@@ -119,6 +120,6 @@ export default class ExchangerV3Thread extends BaseChildThread implements IBaseC
             token0,
             token1,
             fee
-        }
+        };
     }
 }

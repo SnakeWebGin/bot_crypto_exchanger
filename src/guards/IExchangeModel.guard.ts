@@ -1,5 +1,5 @@
-import {interfaces} from "inversify";
-import {IExchangerPrice} from "./ExchangerThread.guard";
+import {interfaces} from 'inversify';
+import {IExchangerPrice} from './ExchangerThread.guard';
 
 export interface IExchangePair {
     v2: IExchangerPrice;

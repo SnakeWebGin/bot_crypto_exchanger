@@ -1,14 +1,14 @@
-import {inject, injectable} from "inversify";
-import {Subject} from "rxjs/Subject";
-import {map} from "rxjs/operators/map";
-import {Observable} from "rxjs/Observable";
-import {merge} from "rxjs/observable/merge";
+import {inject, injectable} from 'inversify';
+import {Subject} from 'rxjs/Subject';
+import {map} from 'rxjs/operators/map';
+import {Observable} from 'rxjs/Observable';
+import {merge} from 'rxjs/observable/merge';
 import {
     EnumMultiThreadsService, IExchangeModel, IExchangerInitData, IExchangerPrice,
     IExchangers, IExchangersEvent, ILogger,
     IMultiThreadsService,
     IStreamListenBroker
-} from "../guards";
+} from '../guards';
 
 @injectable()
 export class Exchangers implements IExchangers {

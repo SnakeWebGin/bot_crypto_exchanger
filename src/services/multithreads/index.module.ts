@@ -11,7 +11,7 @@ import {ThreadMain} from './ThreadMain';
 import {interfaces} from 'inversify';
 import {QueueBroker} from './brokers/QueueBroker';
 import {ManyAsOneBroker} from './brokers/ManyAsOneBroker';
-import {StreamListenBroker} from "./brokers/StreamListenBroker";
+import {StreamListenBroker} from './brokers/StreamListenBroker';
 
 export const connectMultiThreads = connectModule(({ bind }) => {
     bind<IMultiThreadsService>(IMultiThreadsService.serviceId).to(MultiThreadsService).inSingletonScope();
@@ -30,5 +30,5 @@ export const connectMultiThreads = connectModule(({ bind }) => {
             streamListener.init(id);
             return streamListener;
         };
-    }))
+    }));
 });
